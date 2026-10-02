@@ -13,8 +13,16 @@ installation.
 ## Requirements
 
 - Windows 10 or newer
-- Python 3.10 or newer
 - Tesseract OCR installed and available on `PATH` for screen-reading actions
+- Python 3.10 or newer only for installing from source
+
+## Download for Windows
+
+Download **Botty-Desktop-Windows-x64.exe** from the
+[latest release](https://github.com/Uyruw3/BottyDesktop/releases/latest) and
+open it. Python is not required. Tesseract is optional and only needed for
+screen-reading; voice and local AI features have separate optional setup
+requirements.
 
 ## Install and run
 
