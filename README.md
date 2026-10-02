@@ -44,6 +44,13 @@ python -m pip install -e ".[dev]"
 python -m pytest
 ```
 
+To build the standalone Windows executable from source:
+
+```powershell
+python -m pip install -e ".[dev]"
+python -m PyInstaller --clean --noconfirm Botty-Desktop-Windows-x64.spec
+```
+
 ## Privacy and safety
 
 Screen-reading uses Tesseract on a screenshot captured only when requested.
