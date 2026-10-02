@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "botty-desktop"
-version = "0.2.0"
+version = "0.2.0.1"
 description = "Botty Desktop - Asistente con IA local, expresiones, voz y memoria"
 authors = [{name = "Botty"}]
 license = {text = "MIT"}
@@ -20,7 +20,7 @@ dependencies = [
 voice = ["SpeechRecognition>=3.10.0", "edge-tts>=6.1.0"]
 microphone = ["PyAudio>=0.2.14"]
 local-ai = ["llama-cpp-python>=0.2.90"]
-dev = ["pytest>=7.0.0", "pyinstaller>=6.0.0"]
+dev = ["pytest>=7.0.0", "pyinstaller>=6.0.0", "edge-tts>=6.1.0"]
 
 [project.scripts]
 botty = "botty.__main__:main"

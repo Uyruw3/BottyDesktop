@@ -20,9 +20,11 @@ installation.
 
 Download **Botty-Desktop-Windows-x64.exe** from the
 [latest release](https://github.com/Uyruw3/BottyDesktop/releases/latest) and
-open it. Python is not required. Tesseract is optional and only needed for
-screen-reading; voice and local AI features have separate optional setup
-requirements.
+open it. The command window stays open so startup, microphone, AI, and speech
+messages remain visible. Python is not required. Spoken replies use the online
+Edge voice service and need an internet connection and an available Windows
+audio output. Tesseract is only needed for screen-reading; microphone
+recognition and local AI have separate optional setup requirements.
 
 ## Install and run
 
@@ -32,7 +34,7 @@ python -m pip install -e ".[voice]"
 botty
 ```
 
-Speech recognition and online text-to-speech are optional. Install
+Online text-to-speech is configured by default. Install
 `python -m pip install -e ".[microphone]"` to enable microphone input; Windows
 may require a compatible PyAudio wheel. Local GGUF model support is available
 with `python -m pip install -e ".[local-ai]"`; place the model in `botty/models/`.

@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.0.1
+
+- Package Edge TTS in the Windows executable and keep its console visible.
+- Remove the network request from voice initialization and report playback
+  errors in the console.
+
 ## 0.2.0
 
 - Published Botty Desktop from its own standalone repository.

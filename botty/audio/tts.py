@@ -16,17 +16,20 @@ class Speaker:
         self._is_speaking = False
         self._lock = threading.Lock()
         self._ready = False
+        self._edge_tts_available = False
 
     def init(self):
         try:
             import edge_tts
-            asyncio.run(edge_tts.list_voices())
+            self._edge_tts_available = True
             self._ready = True
-        except Exception:
-            print("  [TTS] edge-tts no disponible. Instala: pip install edge-tts")
+            print(f"  [TTS] Voz lista ({Config.TTS_VOICE}); se conecta al hablar.")
+        except ImportError as e:
+            print(f"  [TTS] Voz no disponible: no se pudo cargar edge-tts ({e})")
 
     def say(self, text, block=False):
         if not self._ready:
+            print(f"  [TTS] No se puede reproducir la respuesta: {text}")
             return
         self._queue.put(text)
         if self._worker is None or not self._worker.is_alive():
@@ -51,12 +54,19 @@ class Speaker:
                 continue
             with self._lock:
                 self._is_speaking = True
-            loop.run_until_complete(self._play(text))
-            with self._lock:
-                self._is_speaking = False
+            try:
+                print(f"  [TTS] Botty: {text}")
+                loop.run_until_complete(self._play(text))
+            except Exception as e:
+                print(f"  [TTS] Error al reproducir voz: {e}")
+            finally:
+                with self._lock:
+                    self._is_speaking = False
         loop.close()
 
     async def _play(self, text):
+        if not self._edge_tts_available:
+            return
         import edge_tts
         communicate = edge_tts.Communicate(text, Config.TTS_VOICE)
         tmp = tempfile.NamedTemporaryFile(delete=False, suffix=".mp3")
@@ -64,11 +74,18 @@ class Speaker:
         tmp.close()
         try:
             await communicate.save(tmp_name)
-            pygame.mixer.init()
+            if not pygame.mixer.get_init():
+                pygame.mixer.init()
             pygame.mixer.music.load(tmp_name)
             pygame.mixer.music.play()
+            print("  [TTS] Reproduciendo respuesta.")
             while pygame.mixer.music.get_busy():
                 await asyncio.sleep(0.05)
+        except Exception as e:
+            raise RuntimeError(
+                "No se pudo generar o reproducir audio. Comprueba la conexión "
+                "a Internet y la salida de sonido de Windows."
+            ) from e
         finally:
             try:
                 os.unlink(tmp_name)
@@ -80,6 +97,7 @@ class Speaker:
             return self._is_speaking
 
     def stop(self):
-        pygame.mixer.music.stop()
+        if pygame.mixer.get_init():
+            pygame.mixer.music.stop()
         with self._lock:
             self._is_speaking = False

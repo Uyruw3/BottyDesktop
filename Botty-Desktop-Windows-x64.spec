@@ -1,12 +1,13 @@
-# -*- mode: python ; coding: utf-8 -*-
+from PyInstaller.utils.hooks import collect_all
 
+edge_datas, edge_binaries, edge_hiddenimports = collect_all("edge_tts")
 
 a = Analysis(
     ['botty/__main__.py'],
     pathex=[],
-    binaries=[],
-    datas=[],
-    hiddenimports=[],
+    binaries=edge_binaries,
+    datas=edge_datas,
+    hiddenimports=edge_hiddenimports,
     hookspath=[],
     hooksconfig={},
     runtime_hooks=[],
@@ -29,7 +30,7 @@ exe = EXE(
     upx=True,
     upx_exclude=[],
     runtime_tmpdir=None,
-    console=False,
+    console=True,
     disable_windowed_traceback=False,
     argv_emulation=False,
     target_arch=None,
